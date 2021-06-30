@@ -21,7 +21,6 @@ b3 =py.Rect(0,590,600,10)
 b4 =py.Rect(590,0,10,600)
 bordercolor = (200,200,200)
 time = 0
-inf_plot = []
 def drawBorders():
     py.draw.rect(screen,bordercolor,b1)
     py.draw.rect(screen,bordercolor,b2)
@@ -41,6 +40,7 @@ all_infected = False
 d_infected = 0
 prev_inf = 0
 inf = 0
+inf_plot = []
 while running:
     clock.tick(fps_limit)
     screen.fill((50,50,50))
@@ -67,21 +67,14 @@ while running:
             if o.color == infected:
                 if o.posx != p.posx and o.posy != p.posy:
                     if o.rect.colliderect(p.rect):
-                        if o.spreadProbability > 0:
-                            o.color = p.color = infected
-                            o.spreadProbability -= 1
-                            p.draw()
-                            o.draw()
+                        o.color = p.color = infected
+                        p.draw()
+                        o.draw()
 
     drawBorders()
-
     for p in people:
         if p.color == infected:
-            p.infectionTime +=1
-            if p.infectionTime >= 100:
-                p.setColor(healthy)
             inf += 1
-
     # print(inf)
     if prev_inf == inf:
         d_infected += 1
@@ -97,6 +90,7 @@ while running:
     inf_plot.append(inf)
     py.display.flip()
     inf = 0
+
 plt.plot(inf_plot)
 plt.show()
 py.quit()
